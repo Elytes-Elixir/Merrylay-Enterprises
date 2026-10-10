@@ -1,0 +1,89 @@
+﻿# Merrylay Enterprises - LAN Optimization Configuration
+
+# Enable Gzip compression for faster network transfer
+<IfModule mod_deflate.c>
+    AddOutputFilterByType DEFLATE text/html text/plain text/xml text/css text/javascript application/javascript application/json
+    AddOutputFilterByType DEFLATE application/rss+xml application/xhtml+xml image/svg+xml
+    BrowserMatch ^Mozilla/4 gzip-only-text/html
+    BrowserMatch ^Mozilla/4\.0[678] no-gzip
+    BrowserMatch \bMSIE !no-gzip !gzip-only-text/html
+    Header append Vary User-Agent
+</IfModule>
+
+# Enable browser caching for static assets
+<IfModule mod_expires.c>
+    ExpiresActive On
+    ExpiresByType text/css "access plus 1 year"
+    ExpiresByType application/javascript "access plus 1 year"
+    ExpiresByType image/jpeg "access plus 1 year"
+    ExpiresByType image/png "access plus 1 year"
+    ExpiresByType image/gif "access plus 1 year"
+    ExpiresByType image/svg+xml "access plus 1 year"
+    ExpiresByType application/x-font-ttf "access plus 1 year"
+    ExpiresByType application/x-font-woff "access plus 1 year"
+    ExpiresByType application/x-font-woff2 "access plus 1 year"
+</IfModule>
+
+# Disable ETag for better caching
+<IfModule mod_headers.c>
+    Header unset ETag
+    FileETag None
+</IfModule>
+
+# Security headers
+<IfModule mod_headers.c>
+    Header set X-Content-Type-Options "nosniff"
+    Header set X-Frame-Options "SAMEORIGIN"
+    Header set X-XSS-Protection "1; mode=block"
+</IfModule>
+
+# Protect sensitive files
+<FilesMatch "^\.(htaccess|htpasswd|ini|log|sh|sql|md)$">
+    Order Allow,Deny
+    Deny from all
+</FilesMatch>
+
+# Protect configuration files
+<FilesMatch "config\.php|db\.php|network\.php">
+    Order Allow,Deny
+    Deny from all
+</FilesMatch>
+
+# Protect sensitive maintenance data in designated directories without
+# blocking application assets such as the root manifest.json.
+<IfModule mod_rewrite.c>
+    RewriteEngine On
+    RewriteRule ^(?:.*/)?(?:backups|debug|audit|migrations|scripts)/.*\.(?:txt|json|py|backup|backup2|deprecated|disabled)$ - [F,NC,L]
+</IfModule>
+
+# Protect known sensitive artifacts stored outside those directories.
+<FilesMatch "^(debug_log\.txt|debug_output\.txt|tmp_schema_compare\.py|receipt_dispatch\.php\.(backup2|deprecated)|add\.php\.disabled)$">
+    Order Allow,Deny
+    Deny from all
+</FilesMatch>
+
+# Keep archived one-off diagnostics and repair scripts out of web exposure.
+# These active application routes share utility-like basenames and remain allowed.
+<FilesMatch "^(?!(delete_dispatch|delete_activity|update_cost_prices)\.php$)(apply_|breakdown_|check_|clear_|cleanup_|compare_|comprehensive_|correct_|count_|debug_|deep_|delete_|diagnose_|direct_|ensure_|explain_|export_|find_|fix_|force_|inspect_|install_|investigate_|manual_|match_|proper_|recalculate_|run_|setup_check|simple_balance_check|sync_|temp_|temporary|test|tmp_|update_|use_|verify_).*\.php$">
+    Order Allow,Deny
+    Deny from all
+</FilesMatch>
+
+# Prevent directory listing
+Options -Indexes
+
+# Enable KeepAlive for better network performance
+<IfModule mod_headers.c>
+    Header set Connection keep-alive
+</IfModule>
+
+# Increase upload limits for network uploads
+php_value upload_max_filesize 50M
+php_value post_max_size 50M
+php_value max_execution_time 300
+php_value max_input_time 300
+php_value memory_limit 256M
+
+# Enable output buffering
+php_value output_buffering 4096
+php_value implicit_flush Off

@@ -1,0 +1,181 @@
+# ============================================================================
+# MYSQL/MARIADB PERFORMANCE OPTIMIZATION FOR MERRYLAY SYSTEM
+# ============================================================================
+# This configuration optimizes MySQL for multi-user LAN performance
+# Place these settings in your my.ini or my.cnf
+# ============================================================================
+
+[mysqld]
+# ----------------------------------------------------------------------------
+# CONNECTION SETTINGS
+# ----------------------------------------------------------------------------
+
+# Maximum concurrent connections
+# For LAN with 5-10 users: 100-150 is sufficient
+max_connections = 150
+
+# Connection timeout (seconds)
+wait_timeout = 300
+interactive_timeout = 300
+
+# ----------------------------------------------------------------------------
+# MEMORY SETTINGS
+# ----------------------------------------------------------------------------
+
+# InnoDB buffer pool size (CRITICAL - should be 70-80% of available RAM)
+# For 8GB RAM system: 5-6GB
+# For 4GB RAM system: 2.5-3GB
+# For 2GB RAM system: 1-1.5GB
+innodb_buffer_pool_size = 2G
+
+# InnoDB log file size (larger = better write performance)
+innodb_log_file_size = 256M
+
+# InnoDB log buffer size
+innodb_log_buffer_size = 16M
+
+# Key buffer size for MyISAM (if using MyISAM tables)
+key_buffer_size = 256M
+
+# Table cache (increases for many tables)
+table_open_cache = 2000
+
+# ----------------------------------------------------------------------------
+# INNODB PERFORMANCE
+# ----------------------------------------------------------------------------
+
+# InnoDB flush method (O_DIRECT reduces OS caching overhead)
+innodb_flush_method = O_DIRECT
+
+# InnoDB I/O threads (increase for SSD storage)
+innodb_read_io_threads = 4
+innodb_write_io_threads = 4
+
+# InnoDB purge threads
+innodb_purge_threads = 4
+
+# InnoDB buffer pool instances (divide buffer pool for concurrency)
+innodb_buffer_pool_instances = 2
+
+# InnoDB adaptive hash index (disable for high concurrency)
+innodb_adaptive_hash_index = 0
+
+# InnoDB lock wait timeout (reduces deadlocks)
+innodb_lock_wait_timeout = 5
+
+# InnoDB dirty page ratio (controls write frequency)
+innodb_max_dirty_pages_pct = 75
+
+# ----------------------------------------------------------------------------
+# QUERY CACHE (DISABLED - not recommended for high concurrency)
+# ----------------------------------------------------------------------------
+
+# Query cache is disabled by default in MySQL 8.0
+# For MariaDB, consider disabling for better performance
+# query_cache_type = 0
+# query_cache_size = 0
+
+# ----------------------------------------------------------------------------
+# TEMPORARY TABLES
+# ----------------------------------------------------------------------------
+
+# Temporary table size (in memory before disk)
+tmp_table_size = 256M
+
+# Maximum heap table size
+max_heap_table_size = 256M
+
+# ----------------------------------------------------------------------------
+# JOIN AND SORT PERFORMANCE
+# ----------------------------------------------------------------------------
+
+# Sort buffer size (per connection)
+sort_buffer_size = 4M
+
+# Join buffer size (per connection)
+join_buffer_size = 4M
+
+# Read buffer size (per connection)
+read_buffer_size = 2M
+
+# Read random buffer size (per connection)
+read_rnd_buffer_size = 2M
+
+# ----------------------------------------------------------------------------
+# SLOW QUERY LOG (ENABLE FOR MONITORING)
+# ----------------------------------------------------------------------------
+
+# Enable slow query log
+slow_query_log = 1
+
+# Log queries taking longer than 2 seconds
+long_query_time = 2
+
+# Log queries not using indexes
+log_queries_not_using_indexes = 1
+
+# Slow query log file location
+slow_query_log_file = "C:\\xampp\\mysql\\data\\slow-query.log"
+
+# ----------------------------------------------------------------------------
+# BINARY LOG (DISABLE FOR SINGLE-SERVER LAN)
+# ----------------------------------------------------------------------------
+
+# Disable binary log for single-server setup (improves write performance)
+# log_bin = OFF
+
+# If replication is needed, enable with these settings:
+# log_bin = mysql-bin
+# binlog_format = ROW
+# expire_logs_days = 7
+# max_binlog_size = 100M
+
+# ----------------------------------------------------------------------------
+# CHARACTER SET AND COLLATION
+# ----------------------------------------------------------------------------
+
+# Use UTF8MB4 for full Unicode support
+character-set-server = utf8mb4
+collation-server = utf8mb4_unicode_ci
+
+# ----------------------------------------------------------------------------
+# PERFORMANCE SCHEMA (DISABLE FOR PRODUCTION)
+# ----------------------------------------------------------------------------
+
+# Disable performance schema for production (reduces overhead)
+performance_schema = OFF
+
+# ----------------------------------------------------------------------------
+# GENERAL QUERY LOG (DISABLE IN PRODUCTION)
+# ----------------------------------------------------------------------------
+
+# General query log (DISABLE in production - huge performance impact)
+# general_log = OFF
+# general_log_file = "C:\\xampp\\mysql\\data\\general-query.log"
+
+# ----------------------------------------------------------------------------
+# NETWORK SETTINGS
+# ----------------------------------------------------------------------------
+
+# Maximum allowed packet size (for large queries)
+max_allowed_packet = 64M
+
+# Thread stack size
+thread_stack = 256K
+
+# Thread cache size (reduces thread creation overhead)
+thread_cache_size = 50
+
+# ----------------------------------------------------------------------------
+# MYISAM SETTINGS (if using MyISAM tables)
+# ----------------------------------------------------------------------------
+
+# MyISAM concurrent insert
+concurrent_insert = 2
+
+# MyISAM sort buffer size
+myisam_sort_buffer_size = 64M
+
+# ============================================================================
+# END OF MYSQL PERFORMANCE CONFIGURATION
+# ============================================================================

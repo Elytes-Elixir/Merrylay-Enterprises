@@ -1,0 +1,5 @@
+# Scripts are CLI/maintenance surfaces, not web endpoints.
+<FilesMatch "\.(php|bat|cmd|ps1|txt|json|py|backup|backup2|deprecated|disabled)$">
+    Order Allow,Deny
+    Deny from all
+</FilesMatch>

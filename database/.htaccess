@@ -1,0 +1,5 @@
+# Database scripts and SQL snapshots are not web endpoints.
+<FilesMatch "\.(sql|php)$">
+    Order Allow,Deny
+    Deny from all
+</FilesMatch>

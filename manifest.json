@@ -1,0 +1,39 @@
+{
+  "name": "Merrylay Enterprises",
+  "short_name": "Merrylay",
+  "description": "Inventory and Sales Management System for Merrylay Enterprises",
+  "start_url": "./dashboard/index.php",
+  "display": "standalone",
+  "background_color": "#1e293b",
+  "theme_color": "#1e293b",
+  "orientation": "portrait-primary",
+  "scope": "./",
+  "categories": [
+    "business",
+    "productivity",
+    "finance"
+  ],
+  "shortcuts": [
+    {
+      "name": "Dashboard",
+      "short_name": "Dashboard",
+      "description": "View dashboard overview",
+      "url": "./dashboard/index.php"
+    },
+    {
+      "name": "New Sale",
+      "short_name": "New Sale",
+      "description": "Create a new sale",
+      "url": "./dispatch/daily/index.php"
+    },
+    {
+      "name": "Products",
+      "short_name": "Products",
+      "description": "Manage products",
+      "url": "./products/view.php"
+    }
+  ],
+  "screenshots": [],
+  "related_applications": [],
+  "prefer_related_applications": false
+}
